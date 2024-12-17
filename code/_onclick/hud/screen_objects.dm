@@ -133,6 +133,10 @@
 				var/datum/component/personal_crafting/C = H.craftingthing
 				to_chat(H, span_warning("I am crafting \a [H.mind?.lastrecipe] again."))
 				C.construct_item(H, H.mind?.lastrecipe)
+		else if(modifiers["middle"])
+			var/datum/browser/popup = new(usr, "[src]", 600, 900)
+			popup.set_content(preprocessed_recipes)
+			popup.open(FALSE)
 		else
 			H.playsound_local(H, 'sound/misc/click.ogg', 100)
 			if(H.craftingthing)
