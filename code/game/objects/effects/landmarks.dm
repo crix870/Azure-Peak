@@ -250,6 +250,10 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 	name = "Orthodoxist"
 	icon_state = "arrow"
 
+/obj/effect/landmark/start/sergeant
+	name = "Sergeant"
+	icon_state = "arrow"
+
 /obj/effect/landmark/start/nightman
 	name = "Bathmaster"
 	icon_state = "arrow"
@@ -385,6 +389,10 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 
 /obj/effect/landmark/start/adventurer
 	name = "Adventurer"
+	icon_state = "arrow"
+
+/obj/effect/landmark/start/courtagent
+	name = "Court Agent"
 	icon_state = "arrow"
 
 //yrf

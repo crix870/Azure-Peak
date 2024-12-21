@@ -153,6 +153,20 @@
 	prevent_crits = list(BCLASS_CUT, BCLASS_STAB, BCLASS_CHOP, BCLASS_BLUNT, BCLASS_TWIST)
 	blocksound = PLATEHIT
 
+/obj/item/clothing/neck/roguetown/fencerguard
+	name = "fencer neckguard"
+	icon_state = "fencercollar"
+	armor = list("blunt" = 90, "slash" = 100, "stab" = 80, "bullet" = 100, "laser" = 0,"energy" = 0, "bomb" = 0, "bio" = 0, "rad" = 0, "fire" = 0, "acid" = 0)
+	smeltresult = /obj/item/ingot/iron
+	anvilrepair = /datum/skill/craft/armorsmithing
+	max_integrity = 150
+	resistance_flags = FIRE_PROOF
+	slot_flags = ITEM_SLOT_NECK
+	body_parts_covered = NECK
+	prevent_crits = list(BCLASS_CUT, BCLASS_STAB, BCLASS_CHOP, BCLASS_BLUNT, BCLASS_TWIST)
+	blocksound = PLATEHIT
+	allowed_race = NON_DWARVEN_RACE_TYPES
+
 /obj/item/clothing/neck/roguetown/gorget/forlorncollar
 	name = "forlorn collar"
 	desc = "A old reminder."
@@ -196,6 +210,11 @@
 	desc = ""
 	icon_state = "noc"
 
+/obj/item/clothing/neck/roguetown/psicross/abyssor
+	name = "amulet of Abyssor"
+	desc = ""
+	icon_state = "abyssor"
+
 /obj/item/clothing/neck/roguetown/psicross/dendor
 	name = "amulet of Dendor"
 	desc = ""
@@ -228,12 +247,14 @@
 
 /obj/item/clothing/neck/roguetown/psicross/wood
 	name = "wooden psycross"
-	icon_state = "psicrossw"
+	icon_state = "psycross_w"
+	item_state = "psycross_w"
 	sellprice = 0
 
 /obj/item/clothing/neck/roguetown/psicross/silver
 	name = "silver psycross"
-	icon_state = "psicrosssteel"
+	icon_state = "psycross_s"
+	item_state = "psycross_s"
 	sellprice = 50
 
 /obj/item/clothing/neck/roguetown/psicross/silver/pickup(mob/user)
@@ -287,7 +308,8 @@
 /obj/item/clothing/neck/roguetown/psicross/g
 	name = "golden psycross"
 	desc = ""
-	icon_state = "psicrossg"
+	icon_state = "psycross_g"
+	item_state = "psycross_g"
 	//dropshrink = 0.75
 	resistance_flags = FIRE_PROOF
 	sellprice = 100

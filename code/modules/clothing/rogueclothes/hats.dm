@@ -116,6 +116,35 @@
 	dynamic_hair_suffix = ""
 	sewrepair = TRUE
 
+/obj/item/clothing/head/roguetown/roguehood/abyssor
+	name = "depths hood"
+	desc = "A hood worn by the followers of Abyssor, with a unique, coral-shaped mask. How do they even see out of this?"
+	color = null
+	icon_state = "abyssorhood"
+	item_state = "abyssorhood"
+	icon = 'icons/roguetown/clothing/head.dmi'
+	body_parts_covered = NECK
+	slot_flags = ITEM_SLOT_HEAD
+	dynamic_hair_suffix = ""
+	edelay_type = 1
+	adjustable = CAN_CADJUST
+	toggle_icon_state = TRUE
+	max_integrity = 100
+
+/obj/item/clothing/head/roguetown/necramask
+	name = "death mask"
+	desc = "A hood with a decorated jaw bone at the chin,normally worn by some followers of Necra as a form of devotion"
+	color = null
+	icon_state = "deathface"
+	item_state = "deathface"
+	icon = 'icons/roguetown/clothing/head.dmi'
+	mob_overlay_icon = 'icons/roguetown/clothing/onmob/head.dmi' //Overrides slot icon behavior
+	body_parts_covered = NECK|MOUTH //Jaw bone
+	slot_flags = ITEM_SLOT_HEAD|ITEM_SLOT_MASK
+	flags_inv = HIDEEARS|HIDEFACE|HIDEHAIR|HIDEFACIALHAIR
+	dynamic_hair_suffix = ""
+	sewrepair = TRUE
+
 /obj/item/clothing/head/roguetown/dendormask
 	name = "briarmask"
 	desc = "A mask of wood worn by druids in service to Dendor."
@@ -247,6 +276,13 @@
 	desc = "A fancy looking hat with colorful feathers sticking out of it."
 	icon_state = "fancy_hat"
 	item_state = "fancyhat"
+	sewrepair = TRUE
+
+/obj/item/clothing/head/roguetown/fedora
+	name = "archeologist's hat"
+	desc = "A strangely shaped hat with dust caked onto its aged leather."
+	icon_state = "curator"
+	item_state = "curator"
 	sewrepair = TRUE
 
 /obj/item/clothing/head/roguetown/hatfur
@@ -512,7 +548,7 @@
 	icon_state = "kettle"
 	body_parts_covered = HEAD|HAIR|EARS
 	armor = list("blunt" = 80, "slash" = 90, "stab" = 70, "bullet" = 100, "laser" = 0,"energy" = 0, "bomb" = 0, "bio" = 0, "rad" = 0, "fire" = 0, "acid" = 0)
-	
+
 /obj/item/clothing/head/roguetown/helmet/psydonbarbute
 	name = "psydonian barbute"
 	desc = "A barbute styled with Psydonian Imagery."
@@ -685,6 +721,45 @@
 	icon_state = "bascinet_novisor"
 	item_state = "bascinet_novisor"
 	color = COLOR_ASSEMBLY_GOLD
+
+/obj/item/clothing/head/roguetown/helmet/otavan
+	name = "otavan helmet"
+	desc = ""
+	icon_state = "otavahelm"
+	item_state = "otavahelm"
+	adjustable = CAN_CADJUST
+	emote_environment = 3
+	body_parts_covered = FULL_HEAD
+	flags_inv = HIDEEARS|HIDEFACE|HIDEHAIR
+	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH
+	block2add = FOV_BEHIND
+	smeltresult = /obj/item/ingot/steel
+	smelt_bar_num = 2
+
+/obj/item/clothing/head/roguetown/helmet/otavan/AdjustClothes(mob/user)
+	if(loc == user)
+		playsound(user, "sound/items/visor.ogg", 100, TRUE, -1)
+		if(adjustable == CAN_CADJUST)
+			adjustable = CADJUSTED
+			icon_state = "otavahelm_raised"
+			body_parts_covered = HEAD|EARS|HAIR
+			flags_inv = HIDEEARS
+			flags_cover = null
+			emote_environment = 0
+			update_icon()
+			if(ishuman(user))
+				var/mob/living/carbon/H = user
+				H.update_inv_head()
+			block2add = null
+		else if(adjustable == CADJUSTED)
+			ResetAdjust(user)
+			emote_environment = 3
+			update_icon()
+			if(user)
+				if(ishuman(user))
+					var/mob/living/carbon/H = user
+					H.update_inv_head()
+		user.update_fov_angles()
 
 /obj/item/clothing/head/roguetown/helmet/heavy
 	name = "barbute"
@@ -866,6 +941,38 @@
 	desc = "Headwear commonly worn by Templars in service to the Inquisition of Otava. PSYDON Endures."
 	icon_state = "psydonarmet"
 	item_state = "psydonarmet"
+	flags_inv = HIDEEARS|HIDEFACE|HIDEHAIR
+
+/obj/item/clothing/head/roguetown/helmet/heavy/psydonhelm/attackby(obj/item/W, mob/living/user, params)
+	..()
+	if(istype(W, /obj/item/natural/cloth) && !detail_tag)
+		var/list/colors = list(
+		"Swan White"="#ffffff",
+		"Lavender"="#865c9c",
+		"Royal Purple"="#5E4687",
+		"Wine Rouge"="#752B55",
+		"Sow's skin"="#CE929F",
+		"Knight's Red"="#933030",
+		"Madroot Red"="#AD4545",
+		"Marigold Orange"="#E2A844",
+		"Politely, Yuck"="#685542",
+		"Astrata's Yellow"="#FFFD8D",
+		"Bog Green"="#375B48",
+		"Seafoam Green"="#49938B",
+		"Woad Blue"="#395480",
+		"Cornflower Blue"="#749EE8",
+		"Blacksteel Grey"="#404040",)
+
+		var/choice = input(user, "Choose a color.", "Orle") as anything in colors
+		user.visible_message(span_warning("[user] adds [W] to [src]."))
+		qdel(W)
+		detail_color = colors[choice]
+		detail_tag = "_detail"
+		update_icon()
+		if(loc == user && ishuman(user))
+			var/mob/living/carbon/H = user
+			H.update_inv_head()
+
 
 /obj/item/clothing/head/roguetown/helmet/heavy/nochelm
 	name = "noc helmet"
@@ -897,6 +1004,17 @@
 	item_state = "dendorhelm"
 	emote_environment = 3
 	flags_inv = HIDEEARS|HIDEFACE|HIDEHAIR
+	block2add = FOV_BEHIND
+	smeltresult = /obj/item/ingot/steel
+	smelt_bar_num = 2
+
+/obj/item/clothing/head/roguetown/helmet/heavy/abyssorgreathelm
+	name = "abyssorite helmet"
+	desc = "A helmet commonly worn by Templars in service to Abyssor. It evokes imagery of the sea with a menacing crustacean visage."
+	icon_state = "abyssorgreathelm"
+	item_state = "abyssorgreathelm"
+	emote_environment = 3
+	flags_inv = HIDEEARS|HIDEFACE|HIDEHAIR|HIDEFACIALHAIR
 	block2add = FOV_BEHIND
 	smeltresult = /obj/item/ingot/steel
 	smelt_bar_num = 2
@@ -1097,19 +1215,23 @@
 	name = "leather miners helmet"
 	desc = "A leather kettle-like helmet with a headlamp, fueled by magiks."
 	icon_state = "minerslamp"
-	var/brightness_on = 4 //less than a torch; basically good for one person.
 	var/on = FALSE
-	actions_types = list(/datum/action/item_action/toggle_helmet_light)
+	light_range = 4 //less than a torch; basically good for one person.
+	light_power = 1
+	light_color = LIGHT_COLOR_ORANGE
+	light_system = MOVABLE_LIGHT
 
-/obj/item/clothing/head/roguetown/helmet/leather/minershelm/attack_self(mob/living/user)
+/obj/item/clothing/head/roguetown/helmet/leather/minershelm/MiddleClick(mob/user)
+	if(.)
+		return
+	user.changeNext_move(CLICK_CD_MELEE)
+	playsound(loc, 'sound/misc/toggle_lamp.ogg', 100)
 	toggle_helmet_light(user)
+	to_chat(user, span_info("I toggle [src] [on ? "on" : "off"]."))
 
 /obj/item/clothing/head/roguetown/helmet/leather/minershelm/proc/toggle_helmet_light(mob/living/user)
 	on = !on
-	if(on)
-		turn_on(user)
-	else
-		turn_off(user)
+	set_light_on(on)
 	update_icon()
 
 /obj/item/clothing/head/roguetown/helmet/leather/minershelm/update_icon()
@@ -1122,12 +1244,6 @@
 		var/datum/action/A = X
 		A.UpdateButtonIcon(force = TRUE)
 	..()
-
-/obj/item/clothing/head/roguetown/helmet/leather/minershelm/proc/turn_on(mob/user)
-	set_light(brightness_on)
-
-/obj/item/clothing/head/roguetown/helmet/leather/minershelm/proc/turn_off(mob/user)
-	set_light(0)
 
 /obj/item/clothing/head/roguetown/wizhat
 	name = "wizard hat"
@@ -1330,6 +1446,20 @@
 	max_integrity = 425
 	smeltresult = /obj/item/ingot/blacksteel
 	smelt_bar_num = 2
+
+/obj/item/clothing/head/roguetown/roguehood/psydon
+	name = "psydonian hood"
+	desc = "A hood worn by those who favor Psydon. Forever enduring!"
+	icon_state = "psydonhood"
+	item_state = "psydonhood"
+	color = null
+	body_parts_covered = NECK
+	slot_flags = ITEM_SLOT_HEAD
+	dynamic_hair_suffix = ""
+	edelay_type = 1
+	adjustable = CAN_CADJUST
+	toggle_icon_state = TRUE
+	max_integrity = 100
 
 /obj/item/clothing/head/roguetown/roguehood/hierophant
 	name = "hierophant's pashmina"

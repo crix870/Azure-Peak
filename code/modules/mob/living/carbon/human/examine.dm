@@ -91,6 +91,11 @@
 		if(name in GLOB.outlawed_players)
 			. += span_userdanger("OUTLAW!")
 
+		if(name in GLOB.court_agents)
+			var/datum/job/J = SSjob.GetJob(user.mind.assigned_role)
+			if(J.department_flag & GARRISON || J.department_flag & NOBLEMEN)
+			//if(GLOB.noble_positions.Find(J.title) || GLOB.garrison_positions.Find(J.title))
+				. += span_greentext("<b>[m1] an agent of the court!</b>")
 
 		var/villain_text = get_villain_text()
 		if(villain_text)
@@ -98,6 +103,9 @@
 		var/heretic_text = get_heretic_text(user)
 		if(heretic_text)
 			. += span_notice(heretic_text)
+		var/inquisition_text =get_inquisition_text(user)
+		if(inquisition_text)
+			. +=span_notice(inquisition_text)
 
 	if(leprosy == 1)
 		. += span_necrosis("A LEPER...")
@@ -577,6 +585,15 @@
 		heretic_text += "♥"
 	
 	return heretic_text
+
+
+// Used for Inquisition tags
+/mob/living/proc/get_inquisition_text(mob/examiner)
+	var/inquisition_text
+	if(HAS_TRAIT(src, TRAIT_INQUISITION) && HAS_TRAIT(examiner, TRAIT_INQUISITION))
+		inquisition_text += "Fellow Member of the Inquisition"
+
+	return inquisition_text
 
 /// Returns antagonist-related examine text for the mob, if any. Can return null.
 /mob/living/proc/get_villain_text(mob/examiner)
